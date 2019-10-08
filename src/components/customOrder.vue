@@ -4,7 +4,7 @@
         <div class="row mt-4">
             <div class="col-md-4 mb-4" v-for="item in products" :key="item.id">
                 <div class="card border-0 shadow-sm">
-                    <div style="height: 150px; background-size: cover; background-position: center"
+                    <div style="height: 150px; background-size: contain; background-repeat: no-repeat; background-position: center center;"
                         :style="{backgroundImage: `url(${item.imageUrl}`}">
                     </div>
                     <div class="card-body">
@@ -71,7 +71,7 @@
                     </tfoot>
                 </table>
                 <div class="input-group mb-3 input-group-sm">
-                    <input type="text" class="form-control" placeholder="請輸入優惠碼" v-model="couponCode">
+                    <input type="text" class="form-control" placeholder="請輸入優惠碼 : testcode" v-model="couponCode">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" @click="addCouponCode()">
                             套用優惠碼

@@ -7,16 +7,32 @@
         <table class="table mt-4">
             <thead>
                 <tr>
-                    <th width="120">分類</th>
+                    <th class="click" width="120" @click="changeSort('category')">
+                        分類
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'category') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'category' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
                     <th>產品名稱</th>
-                    <th width="120">原價</th>
-                    <th width="120">售價</th>
-                    <th width="100">是否啟用</th>
+                    <th class="click" width="120" @click="changeSort('origin_price')">
+                        原價
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'origin_price') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'origin_price' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
+                    <th class="click" width="120" @click="changeSort('price')">
+                        售價
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'price') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'price' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
+                    <th class="click" width="100" @click="changeSort('is_enabled')">
+                        是否啟用
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'is_enabled') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'is_enabled' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
                     <th width="160">編輯</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item) in products" :key="item.id">
+                <tr v-for="(item) in sortedProducts" :key="item.id">
                     <td>{{item.category}}</td>
                     <td>{{item.title}}</td>
                     <td class="text-right">
@@ -185,7 +201,9 @@
                 status: {
                     fileUploading: false,
                 },
-                pagination: {}
+                pagination: {},
+                sortBy: 'category',
+                sorting: true
             }
         },
         methods: {
@@ -266,6 +284,39 @@
                     }
                     this.status.fileUploading = false;
                 })
+            },
+            changeSort(type) {
+                if(type == this.sortBy) {
+                    this.sorting = !this.sorting;
+                } else {
+                    this.sortBy = type;
+                    this.sorting = true;
+                }
+            }
+        },
+        computed: {
+            sortedProducts() {
+                if(this.sortBy == 'category') {
+                    return this.products.sort((a, b) => {
+                        a = a[this.sortBy];
+                        b = b[this.sortBy];
+                        if(!this.sorting) {
+                            return a.localeCompare(b);
+                        } else {
+                            return b.localeCompare(a);
+                        }
+                    })
+                } else {
+                    return this.products.sort((a,b) => {
+                        a = a[this.sortBy];
+                        b = b[this.sortBy];
+                        if(!this.sorting) {
+                            return a - b;
+                        } else {
+                            return b - a;
+                        }
+                    })
+                }
             }
         },
         created() {

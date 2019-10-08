@@ -54,7 +54,7 @@ export default new Router({
           meta: {
             requiresAuth: true
           },
-        }
+        },
       ]
     },
     {

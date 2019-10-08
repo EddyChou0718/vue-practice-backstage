@@ -4,18 +4,30 @@
         <table class="table mt-4">
             <thead>
                 <tr>
-                    <th width="120">購買時間</th>
+                    <th class="click" width="120" @click="changeSort('create_at')">
+                        購買時間
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'create_at') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'create_at' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
                     <th width="100">購買人姓名</th>
                     <th width="120">聯絡電話</th>
                     <th>Ｅmail</th>
                     <th >購買項目</th>
-                    <th width="120">應付金額</th>
-                    <th width="100">是否付款</th>
+                    <th class="click" width="120" @click="changeSort('total')">
+                        應付金額
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'total') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'total' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
+                    <th class="click" width="100" @click="changeSort('is_paid')">
+                        是否付款
+                        <span class="fas" 
+                        :class="[(sorting && sortBy == 'is_paid') ? 'fa-angle-down' : 'fa-angle-up', sortBy == 'is_paid' ? 'text-primary' : 'text-secondary']"></span>
+                    </th>
                     <th width="80">編輯</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item) in orders" :key="item.num">
+                <tr v-for="(item) in sortedOrders" :key="item.num">
                     <td>{{$timePlugin.unixtoDateTime(item.create_at)}}</td>
                     <td>{{item.user.name}}</td>
                     <td>{{item.user.tel}}</td>
@@ -124,7 +136,9 @@ export default {
             },
             orders: [],
             pagination: {},
-            isLoading: false
+            isLoading: false,
+            sortBy: 'create_at',
+            sorting: true
         }
     },
     methods: {
@@ -134,12 +148,12 @@ export default {
             this.$http.get(api).then((res) => {
                 console.log(res)
                 this.orders = res.data.orders;
-                this.pagination = res.data.pagination
+                this.pagination = res.data.pagination;
                 this.isLoading = false;
             })
         },
         updateOrder(id) {
-            let api = `${PATH}/api/${APIPATH}/admin/order/${id}`;
+            let api = `${PATH}/api/${APIPATH}/admin/order/-LqKid-fzBcrDileqbNc`;
             this.$http.put(api, {
                 data: this.tempOrder
             }).then((res) => {
@@ -156,6 +170,27 @@ export default {
         openModal(item) {
             this.tempOrder = Object.assign({}, item)
             $('#orderModal').modal('show');
+        },
+        changeSort(type) {
+            if(type == this.sortBy) {
+                this.sorting = !this.sorting;
+            } else {
+                this.sortBy = type;
+                this.sorting = true;
+            }
+        }
+    },
+    computed: {
+        sortedOrders() {
+            return this.orders.sort((a,b) => {
+                a = a[this.sortBy];
+                b = b[this.sortBy];
+                if(!this.sorting) {
+                    return a - b;
+                } else {
+                    return b - a;
+                }
+            })
         }
     },
     created() {

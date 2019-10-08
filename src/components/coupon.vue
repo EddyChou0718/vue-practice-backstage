@@ -70,13 +70,13 @@
                         </div>
                         <div class="form-group">
                             <label for="title">優惠代碼</label>
-                            <input type="text" class="form-control" id="title" placeholder="請輸入名稱"
+                            <input type="text" class="form-control" id="title" placeholder="請輸入代碼"
                                 v-model="tempCoupon.code">
                         </div>
                         <div class="form-group">
                             <label for="title">優惠折扣</label>
                             <div class="input-group">
-                                <input type="number" min="0" max="100" class="form-control" id="title" placeholder="請輸入名稱"
+                                <input type="number" min="0" max="100" class="form-control" id="title" placeholder="請輸入優惠折扣"
                                     v-model="tempCoupon.percent" @change="watchCouponPercent()">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>

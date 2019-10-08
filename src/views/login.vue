@@ -21,23 +21,26 @@
 <script>
 export default {
     data() {
-        return {
-            user: {
-                username: '',
-                password: ''
-            }
-        }
+      return {
+          user: {
+              username: 'eddytest@gmail.com',
+              password: 'eddytest'
+          }
+      }
     },
     methods: {
-        signin() {
-          const api = `${PATH}/admin/signin`;
-          this.$http.post(api, this.user).then((res) => {
-          console.log(res.data)
-              if(res.data.success) {
-                  this.$router.push('/dashboard')
-              }
-          })
-        }
+      signin() {
+        const api = `${PATH}/admin/signin`;
+        this.$http.post(api, this.user).then((res) => {
+        console.log(res.data)
+            if(res.data.success) {
+                this.$router.push('/dashboard')
+            }
+        })
+      }
+    },
+    mounted() {
+      this.signin();
     }
 }
 </script>
