@@ -153,7 +153,7 @@ export default {
             })
         },
         updateOrder(id) {
-            let api = `${PATH}/api/${APIPATH}/admin/order/-LqKid-fzBcrDileqbNc`;
+            let api = `${PATH}/api/${APIPATH}/admin/order/${id}`;
             this.$http.put(api, {
                 data: this.tempOrder
             }).then((res) => {

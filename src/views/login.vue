@@ -40,7 +40,7 @@ export default {
       }
     },
     mounted() {
-      this.signin();
+      // this.signin();
     }
 }
 </script>
